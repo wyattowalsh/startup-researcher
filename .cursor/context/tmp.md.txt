@@ -1,0 +1,98 @@
+# Startup Researcher Project Analysis
+
+Based on `docs.md` and `README.md`.
+
+## Project Goal
+
+The primary goal of the `startup-researcher` project is to automate the process of researching startups. It takes a list of startup identifiers, performs online research, extracts structured data, stores it in a local SQLite database, and provides an interactive chat interface for data analysis.
+
+## Core Workflow
+
+1.  **Input:** A list of arbitrary startup identifier strings is provided via `session.yaml`.
+2.  **Orchestration:** An orchestrator component manages the research process for each startup in the input list (`README.md` diagram).
+3.  **Research & Extraction:** Dedicated 'Researcher' agents (`README.md` diagram, `docs.md` mentions a "Research Agent") gather information from the web for each startup. This involves context gathering and data extraction.
+4.  **Data Storage:** Extracted information is structured according to comprehensive Pydantic models (`docs.md`) and stored in a local SQLite database (`docs.md`, `README.md`). `SQLAlchemy` is likely used as the ORM (`README.md` tech stack).
+5.  **Data Interaction & Analysis:** A 'Data Science Agent' (`docs.md`, `README.md`), using `Chainlit` (`README.md` tech stack), provides a chat interface. Users can interact with this agent to query the stored data and perform analyses, such as generating statistics or visualizations.
+
+## Data Models (`docs.md`)
+
+The project defines a detailed relational schema using Pydantic models to structure the gathered information. Key models include:
+
+*   `Company`: The central model, linking to most others. Contains basic info (name, website, founding date, HQ).
+*   `Founder`: Information about founders.
+*   `FundingRound`: Details on investment rounds.
+*   `Product`: Information on products/services, including descriptions, value propositions, sentiment, embeddings, keywords, and associated `Technology`.
+*   `Technology`: Technologies used or developed.
+*   `Patent`: Patent information.
+*   `MarketSegment`: Target market segments.
+*   `RevenueModel`, `PricingStrategy`, `GoToMarketChannel`: Business model details.
+*   `Competitor`: Information on competitors.
+*   `SWOTEntry`: Strengths, Weaknesses, Opportunities, Threats.
+*   `PressRelease`, `ComplianceNews`: News and releases, with summaries, sentiment, embeddings, keywords.
+*   `GrowthMetric`: Key performance indicators.
+*   `Executive`: Information on key executives.
+*   `CultureSignal`: Signals about company culture from sources like Glassdoor, including sentiment and embeddings.
+*   `Risk`, `Opportunity`: Identified risks and opportunities.
+*   `Tag`: Semantic tags for entities.
+*   `ExtractionMetadata`: Provenance information about the data extraction process (timestamp, confidence, LLM details).
+*   `Source`: Citations for the gathered information.
+
+Many models include fields for versioning (`version_number`, `is_latest`), sentiment analysis (`sentiment_score`), semantic embeddings (`embedding`), auto-categorization (`auto_category`), importance scoring (`importance_score`), keyword extraction (`keywords`), and raw LLM payloads (`raw_extraction`), indicating significant AI/LLM processing during the research phase.
+
+## Technology Stack (`README.md` & User Input)
+
+*   **Project Management:** `uv`
+*   **Database:** `SQLite`
+*   **ORM:** `SQLAlchemy` (Assumed, for interacting with SQLite)
+*   **Chat Interface:** `Chainlit`
+*   **Data Validation/Schema:** `Pydantic`
+*   **Settings Management:** `Pydantic-Settings`
+*   **Configuration Parsing:** `PyYAML`
+*   **Retry Logic:** `Tenacity`
+*   **Agent Framework:** `LangGraph` (for both Research and Data Science agents)
+*   **Research Tools:** `MCP` (Tavily, Brave Search, Content Fetcher)
+*   **Data Analysis Tools:** `MCP` (SQLite tool or SQL generation), potentially `pandas`, plotting libraries.
+
+## Inferred Code Structure (Based on docs, conventions, file tree, and User Input)
+
+*Update based on file exploration (as of current state):*
+
+*   `main.py`: Currently a placeholder. Needs implementation for orchestration (likely involving LangGraph agent setup and execution).
+*   `session.yaml`: Input configuration file (as documented).
+*   `startup_researcher/`: Main package directory.
+    *   `config.py`: Exists, handles settings via `Pydantic-Settings`.
+    *   `logging.py`: Exists, sets up logging using `Loguru`.
+    *   `models.py`: Exists but is currently **empty**. Needs implementation of Pydantic models and potentially SQLAlchemy/SQLModel mapping.
+    *   `__init__.py`: Standard package initializer.
+    *   `agents/`: Contains agent subdirectories.
+        *   `research_agent/`: Currently **empty**. Needs implementation of the `LangGraph` research agent, utilizing `MCP` tools (Tavily, Brave Search, Fetcher) and an LLM for extraction.
+        *   `data_agent/`: Currently **empty**. Needs implementation of the `LangGraph` data science agent, interacting with SQLite (via `MCP` or SQL generation) and integrating with `Chainlit`.
+        *   `__init__.py`: Standard package initializer.
+    *   `database.py` (or similar): **Not found**. Needs implementation for SQLite connection, SQLAlchemy/SQLModel setup, and CRUD operations.
+*   `docs.md`: Detailed technical documentation (describes intended functionality).
+*   `README.md`: Project overview and setup instructions (describes intended functionality).
+
+**Overall Status:** The project structure is partially laid out. Core functionality (data models, agent logic, database interaction) needs implementation using the specified technologies (`LangGraph`, `MCP Tools`, `SQLAlchemy`/`SQLModel`, `Chainlit`).
+
+## Outstanding Technical Details & Decisions
+
+1.  **Database Implementation:**
+    *   Specific SQLite database file path (`config.py` setting?).
+    *   Mapping strategy: Pydantic models (`docs.md`) to SQLAlchemy/SQLModel in `models.py`.
+    *   Database session management within LangGraph agents/Chainlit.
+2.  **Research Agent (`LangGraph` + `MCP`):**
+    *   Specific LLM provider/model for extraction and analysis (needs config).
+    *   Embedding model selection (needs config).
+    *   Detailed LangGraph graph structure (nodes, edges, state) for the research workflow (search -> fetch -> extract -> format -> store).
+    *   Extraction prompts for the LLM.
+    *   Configuration/usage of `Tenacity` for MCP tool calls.
+    *   API Key management for LLMs and MCP Tools (via `.env`/`config.py`).
+3.  **Data Science Agent (`LangGraph` + `MCP`/SQL + `Chainlit`):**
+    *   Detailed LangGraph graph structure for handling chat, query planning, database interaction (using MCP SQLite tool or generating/executing SQL), and data analysis.
+    *   Specific data analysis capabilities and library choices (`pandas`, plotting libs).
+    *   Integration details between Chainlit UI and the LangGraph agent.
+    *   Mechanism for translating natural language queries to database queries.
+4.  **Orchestration (`main.py`):**
+    *   Strategy for managing multiple startup research runs (sequential/concurrent `asyncio`?).
+    *   Error handling strategy for individual startup research failures.
+    *   Mechanism for reading `settings.startups` and initiating agent runs.

@@ -1,0 +1,68 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read # Default permission, adjust if needed (e.g., for writing artifacts)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.13" ] # Based on requires-python = ">=3.13" in pyproject.toml
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      shell: bash
+
+    - name: Install base dependencies
+      run: uv sync
+
+    - name: Run Linters
+      run: |
+        uv sync --group lint
+        make lint
+
+    - name: Check Formatting
+      run: |
+        uv sync --group format
+        uv run -- black --check startup_researcher tests
+        uv run -- isort --check --diff startup_researcher tests
+        # Ruff format check might also be useful here if configured
+        # uv run -- ruff format --check startup_researcher tests
+
+    - name: Run Tests
+      run: |
+        uv sync --group test
+        make test
+
+    # Optional: Upload reports and coverage
+    - name: Upload Test Report
+      if: always() # Run this step even if previous steps fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-report-${{ matrix.python-version }}
+        path: logs/report.html
+
+    - name: Upload Coverage Report
+      if: always() # Run this step even if previous steps fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-${{ matrix.python-version }}
+        path: logs/coverage/ 

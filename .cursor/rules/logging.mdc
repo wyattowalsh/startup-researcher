@@ -1,0 +1,19 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Logging Setup
+
+## Technology
+
+Logging is implemented using `Loguru`. Console output uses `RichHandler` for enhanced formatting.
+
+See [@loguru_docs_pack.md.txt](@loguru_docs_pack.md.txt) and [@rich_docs_pack.md.txt](@rich_docs_pack.md.txt) for library details.
+
+## Implementation
+
+*   Setup logic resides in `[startup_researcher/logging.py](mdc:startup_researcher/logging.py)`.
+*   Configuration (levels, file paths, rotation, format, handlers) is driven by the `logging` section in `[startup_researcher/config.py](mdc:startup_researcher/config.py)`, loaded from `[config.yaml](mdc:config.yaml)`.
+*   Supports console (rich), file, and structured file (JSONL) logging.
+*   Obtain the configured logger instance using `get_logger()` from `[startup_researcher/logging.py](mdc:startup_researcher/logging.py)`.

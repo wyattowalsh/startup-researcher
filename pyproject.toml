@@ -1,0 +1,77 @@
+[project]
+name = "startup-researcher"
+version = "0.1.0"
+description = "automated startup diligence and analyses"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.15.2",
+    "chainlit[all]>=2.5.5",
+    "langchain-anthropic>=0.3.13",
+    "langchain-mcp-adapters>=0.0.11",
+    "langchain[all]>=0.3.25",
+    "langgraph>=0.4.3",
+    "loguru>=0.7.3",
+    "pydantic>=2.11.4",
+    "rich>=14.0.0",
+    "sqlalchemy>=2.0.40",
+    "typer>=0.15.3",
+]
+
+[tool.pytest.ini_options]
+addopts = "-n auto --verbose --hypothesis-show-statistics --html=logs/report.html --self-contained-html --emoji --instafail --cov=startup_researcher --cov-append --cov-report html:logs/coverage"
+testpaths = ["tests"]
+console_output_style = "progress"
+junit_logging = "all"
+log_cli = true
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+log_cli_format = "%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+log_cli_level = "DEBUG"
+log_file = "logs/pytest-logs.txt"
+log_file_date_format = "%Y-%m-%d %H:%M:%S"
+log_file_format = "%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+log_file_level = "DEBUG"
+log_format = "%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+log_level = "DEBUG"
+required_plugins = ["pytest-sugar", "pytest-html", "pytest-emoji", "pytest-icdiff", "pytest-instafail", "pytest-timeout", "pytest-benchmark", "pytest-cov"]
+timeout = 500
+
+[tool.coverage.run]
+data_file = "logs/.coverage"
+
+[tool.isort]
+profile = "black"
+src_paths = ["startup_researcher", "tests"]
+
+[tool.autoflake]
+remove-all-unused-imports = true
+remove-unused-variables = true
+in-place = true
+ignore-init-module-imports = true
+
+[dependency-groups]
+format = [
+    "autoflake>=2.3.1",
+    "autopep8>=2.3.2",
+    "black>=25.1.0",
+    "isort>=6.0.1",
+]
+lint = [
+    "mypy>=1.15.0",
+    "pylint>=3.3.7",
+    "ruff>=0.11.9",
+]
+test = [
+    "hypothesis>=6.131.15",
+    "pytest>=8.3.5",
+    "pytest-benchmark>=5.1.0",
+    "pytest-cov>=6.1.1",
+    "pytest-emoji>=0.2.0",
+    "pytest-html>=4.1.1",
+    "pytest-icdiff>=0.9",
+    "pytest-instafail>=0.5.0",
+    "pytest-mock>=3.14.0",
+    "pytest-sugar>=1.0.0",
+    "pytest-timeout>=2.4.0",
+    "pytest-xdist>=3.6.1",
+]

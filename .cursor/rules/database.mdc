@@ -1,0 +1,18 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Database Interaction
+
+## Technology
+
+*   **Database System:** SQLite.
+*   **ORM/Mapping:** Intended to use SQLAlchemy or SQLModel to interact with the database and map to/from Pydantic models.
+
+## Implementation
+
+*   **Schema Source:** The Pydantic models defined in `[docs.md](mdc:docs.md)` serve as the blueprint for the database schema.
+*   **Code Location:** Database-related code (connection, table definitions/mapping, session management, CRUD operations) should be implemented, likely within `[startup_researcher/models.py](mdc:startup_researcher/models.py)` or a dedicated `[startup_researcher/database.py](mdc:startup_researcher/database.py)` module (currently missing).
+*   **File Path:** The path to the SQLite database file needs to be configured, ideally in `[config.yaml](mdc:config.yaml)` and accessed via `[startup_researcher/config.py](mdc:startup_researcher/config.py)`.
+*   **Session Management:** A clear strategy for managing database sessions within the LangGraph agents and Chainlit callbacks is required.

@@ -1,0 +1,47 @@
+# Add other configurations like 'startups' above or below this section as needed.
+
+logging:
+  # Global settings
+  base_log_path: "logs"  # Base directory for log files. Loguru will create it if it doesn't exist.
+
+  console:
+    enabled: true
+    level: "DEBUG"  # TRACE, DEBUG, INFO, SUCCESS, WARNING, ERROR, CRITICAL
+    rich_tracebacks: true # Use Rich for beautiful tracebacks
+    tracebacks_show_locals: false # Whether to show local variables in tracebacks (can be verbose/sensitive)
+    tracebacks_word_wrap: true
+    markup: true # Allow Rich markup in log messages for console
+    # Other RichHandler specific options can be added, e.g.:
+    # show_time: true
+    # show_level: true
+    # show_path: true
+    # log_time_format: '[%X]'
+
+  file:
+    enabled: true # Enabled by default now
+    level: "INFO"
+    log_name: "app.log" # Will be stored in base_log_path/app.log
+    rotation: "100 MB"  # e.g., "500 MB", "100 KB", "1 week", "1 day", "00:00", "monday at 12:00"
+    retention: "10 days" # e.g., "30 days", 7 (number of files to keep)
+    compression: "zip"   # e.g., "gz", "bz2", "xz", "lzma", "tar", "tar.gz", "tar.bz2", "tar.xz"
+    # format is defined in logging.py default config if not specified here
+    # Other Loguru file sink options: backtrace, diagnose, enqueue (for multiprocessing), delay (lazy file creation)
+    # backtrace: true
+    # diagnose: true
+
+  structured_file:
+    enabled: false # Disabled by default
+    level: "INFO"
+    log_name: "app_structured.jsonl" # Using .jsonl for JSON Lines format
+    rotation: "100 MB"
+    retention: "10 days"
+    compression: "zip"
+    # Other Loguru file sink options: backtrace, diagnose, enqueue, delay
+    # serialize=True is automatically handled for JSON output
+    # backtrace: true
+    # diagnose: true
+
+# You can add your 'startups' list here:
+# startups:
+#   - "Example Startup 1 https://example1.com"
+#   - "Example Startup 2 https://example2.com" 

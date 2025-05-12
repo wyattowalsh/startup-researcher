@@ -1,0 +1,21 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Data Science Agent (Chat with Data)
+
+## Purpose
+
+Provides a conversational interface (`Chainlit`) for users to query the researched startup data stored in the SQLite database and perform data analysis tasks.
+
+## Implementation
+
+*   Located in `[startup_researcher/agents/data_agent/](mdc:startup_researcher/agents/data_agent/)`.
+*   **Framework:** Built using `LangGraph`.
+*   **UI:** Integrates with `Chainlit`. See [@chainlit_docs_pack.md.txt](@chainlit_docs_pack.md.txt).
+*   **Database Interaction:**
+    *   Interacts with the SQLite database.
+    *   May use an `MCP` SQLite tool (if available/suitable - see [@mcp_docs_pack.md.txt](@mcp_docs_pack.md.txt)) or generate SQL queries to be executed via SQLAlchemy/SQLModel.
+*   **Core Logic:** Involves a LangGraph graph handling user messages, planning queries, interacting with the database, performing analysis (potentially using `pandas`, plotting libraries), and formatting results for the Chainlit UI.
+*   **Query Handling:** Needs a mechanism (likely LLM-based within the LangGraph) to translate natural language questions into database queries or analysis steps.

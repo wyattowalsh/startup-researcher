@@ -1,0 +1,22 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Configuration Management
+
+## Technology
+
+Configuration is managed using `Pydantic-Settings`, loading primarily from `[config.yaml](mdc:config.yaml)`. See [@pydantic-settings.md.txt](@pydantic-settings.md.txt) for library details.
+
+## Implementation
+
+*   The core logic is in `[startup_researcher/config.py](mdc:startup_researcher/config.py)`, defining `AppSettings` and related sub-models.
+*   It loads settings from `[config.yaml](mdc:config.yaml)` and potentially environment variables.
+*   Access settings via the `get_settings()` function in `[startup_researcher/config.py](mdc:startup_researcher/config.py)`.
+
+## Key Settings
+
+*   `startups`: List of startups to research (loaded from `[config.yaml](mdc:config.yaml)`).
+*   `logging`: Detailed logging configuration (see `logging.mdc`).
+*   **TODO:** Add settings for Database Path, LLM API Keys, LLM Model Names, Embedding Model Names. These should be added to `[startup_researcher/config.py](mdc:startup_researcher/config.py)` and documented in `[config.yaml](mdc:config.yaml)`. Sensitive keys should ideally be loaded from environment variables or a `.env` file.

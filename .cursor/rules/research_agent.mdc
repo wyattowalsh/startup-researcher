@@ -1,0 +1,23 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Research Agent
+
+## Purpose
+
+Responsible for gathering information about a specific startup from the web, extracting relevant data according to the schema in `[docs.md](mdc:docs.md)`, and preparing it for storage.
+
+## Implementation
+
+*   Located in `[startup_researcher/agents/research_agent/](mdc:startup_researcher/agents/research_agent/)`.
+*   **Framework:** Built using `LangGraph`.
+*   **Tools:** Leverages `MCP` tools for web interaction:
+    *   Tavily Search
+    *   Brave Search
+    *   Content Fetcher (HTML, Markdown, Text)
+    *   Refer to [@mcp_docs_pack.md.txt](@mcp_docs_pack.md.txt) for MCP tool details.
+*   **Core Logic:** Involves defining a LangGraph graph state, nodes (for searching, fetching, processing with an LLM, formatting), and edges to orchestrate the research workflow.
+*   **LLM Usage:** An LLM (provider/model TBD, configured via `[startup_researcher/config.py](mdc:startup_researcher/config.py)`) will be used for data extraction, summarization, sentiment analysis, categorization, etc.
+*   **Embeddings:** An embedding model (TBD, configured via `[startup_researcher/config.py](mdc:startup_researcher/config.py)`) will be used for generating semantic vectors for relevant data points (e.g., Products, PressReleases).

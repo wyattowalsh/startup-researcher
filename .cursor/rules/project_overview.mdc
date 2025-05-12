@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Overview: Startup Researcher
+
+This project automates the research of startups listed in `[config.yaml](mdc:config.yaml)`.
+
+## Core Workflow
+
+1.  **Input:** Startup list from `[config.yaml](mdc:config.yaml)`.
+2.  **Orchestration:** Managed by logic intended for `[main.py](mdc:main.py)`.
+3.  **Research:** Performed by a `LangGraph`-based agent in `[startup_researcher/agents/research_agent/](mdc:startup_researcher/agents/research_agent)` using MCP tools (see [@mcp_docs_pack.md.txt](mdc:@mcp_docs_pack.md.txt)).
+4.  **Data Storage:** Structured data stored in an SQLite database, based on models defined in `[docs.md](mdc:docs.md)`.
+5.  **Data Interaction:** Handled by a `LangGraph`-based agent in `[startup_researcher/agents/data_agent/](mdc:startup_researcher/agents/data_agent)` via a `Chainlit` UI (see [@chainlit_docs_pack.md.txt](mdc:@chainlit_docs_pack.md.txt)).
+
+See `[README.md](mdc:README.md)` and `[docs.md](mdc:docs.md)` for more high-level details. The current implementation status and outstanding decisions are summarized in [@tmp.md.txt](mdc:@tmp.md.txt).

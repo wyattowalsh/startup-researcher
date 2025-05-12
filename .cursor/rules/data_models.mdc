@@ -1,0 +1,18 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Data Modeling and Validation
+
+## Schema Definition
+
+The comprehensive data schema for storing startup information is defined using Pydantic models documented in `[docs.md](mdc:docs.md)`. These models cover various aspects like company details, funding, products, personnel, news, etc.
+
+For details on Pydantic usage, refer to [@pydantic_docs_pack.md.txt](@pydantic_docs_pack.md.txt).
+
+## Implementation
+
+*   These Pydantic models **should be implemented** in `[startup_researcher/models.py](mdc:startup_researcher/models.py)`.
+*   **Mapping to Database:** A strategy is needed to map these Pydantic models to the SQLite database schema, likely using SQLAlchemy or SQLModel within `[startup_researcher/models.py](mdc:startup_researcher/models.py)` or a dedicated `[startup_researcher/database.py](mdc:startup_researcher/database.py)` module.
+*   Features like versioning, sentiment analysis, embeddings, and keyword extraction are part of the schema, indicating significant data processing requirements (likely within the Research Agent).
